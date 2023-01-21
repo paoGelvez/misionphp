@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Equipos;
+use App\Models\jugadores;
+
+
+
 
 
 class Validaciones extends Controller {
@@ -11,11 +14,11 @@ class Validaciones extends Controller {
 
         return $request->validate([
             'nombre'=> 'required|string',
-            'fundacion' => 'required|string',
-            'promediado' => 'required|string',
-            'id_usuarios'=> 'required|number',
-            'id_deportes'=> 'required|number',
-            'id_entrenador' => 'required|number',
+            'edad' => 'required|string',
+            'calificacion' => 'required|string',
+            'posicion'=> 'required|string',
+            'id_equipos' => 'required|string'
+
         ]); 
 
     }
@@ -23,14 +26,14 @@ class Validaciones extends Controller {
 }
 
 
-abstract class accionesEquipos extends Validaciones{
+abstract class accionesJugadores extends Validaciones{
     public function index(){
         try{
-            $equipos = Equipos::all();
-            if(!$equipos){
-                return 'no hay equipos registrados';
+            $jugadores = jugadores::all();
+            if(!$jugadores){
+                return 'no hay jugadores registrados';
             }else{
-                return response()->json($equipos);
+                return response()->json($jugadores);
             }
         }catch(\Exception $e){
             return response()->json([
@@ -41,11 +44,11 @@ abstract class accionesEquipos extends Validaciones{
     }
     public function show($id){
         try{
-            $equipos= Equipos::find($id);
+            $jugadores=jugadores::find($id);
             if(!$deportes){
-                return 'no existe el equipo ';
+                return 'no existe el jugador';
             }else{
-                return response()->json($equipos);
+                return response()->json($jugadores);
             }
         }catch(\Exception $e){
             return response()->json([
@@ -55,7 +58,7 @@ abstract class accionesEquipos extends Validaciones{
     }
     public function delete($id){
         try{
-            $equipos = Equipos::destroy($id);
+            $jugadores = jugadores::destroy($id);
 
         }catch(\Exception $e){
             return response()->json([
@@ -66,11 +69,11 @@ abstract class accionesEquipos extends Validaciones{
     public function update(Request $request,$id){
         try{
             $request=$request->all();
-            $equipos=Equipos::find($id);
-            if(!$equipos){
-                return 'el equipo no existe  ';
+            $jugadores=jugadores::find($id);
+            if(!$jugadores){
+                return 'el jugador no existe  ';
             }else{
-                $equipos = Equipos::find($id)->update($request);
+                $jugadores = jugadores::find($id)->update($request);
             }
         }catch(\Exception $e){
             return response()->json([
@@ -83,7 +86,7 @@ abstract class accionesEquipos extends Validaciones{
 
 
 
-class EquiposController extends accionesEquipos
+class JugadoresController extends accionesJugadores
 {
     public function registerEquipos(Request $request){
 
@@ -92,11 +95,10 @@ class EquiposController extends accionesEquipos
     
             $equipos = Equipos::create([
                 'nombre' => $request->nombre,
-                'fundacion' => $request->fundacion,
-                'promediado' => $request->promediado,
-                'id_usuarios'=> $request->id_usuarios,
-                'id_deportes'=> $request->id_deportes,
-                'id_entrenador'=> $request-> id_entrenador,
+                'edad' => $request->edad,
+                'calificacion' => $request->calificacion,
+                'posicion'=> $request->posicion,
+                'id_equipos'=> $request->id_equipos,
                 
             ]);
     
